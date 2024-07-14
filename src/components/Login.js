@@ -8,10 +8,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth';
-import { useNavigate } from 'react-router-dom';
+import { profile_picture } from '../Utils/constant';
+
 import { useDispatch } from 'react-redux';
 const Login = () => {
-  const navigate = useNavigate();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const name = useRef(null);
   const email = useRef(null);
@@ -20,8 +20,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const handleButtonClick = () => {
-    console.log(email.current.value);
-    console.log(password.current.value);
     let val = checkValidData(email.current.value, password.current.value);
     setError(val);
 
@@ -39,15 +37,14 @@ const Login = () => {
 
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: 'https://example.com/jane-q-user/profile.jpg',
+            photoURL: profile_picture,
           })
             .then(() => {
-              console.log(user);
               const { uid, email, displayName } = auth.currentUser;
               dispatch(
                 addUser({ uid: uid, email: email, displayName: displayName })
               );
-              navigate('/browse');
+
               // Profile updated!
               // ...
             })
@@ -67,7 +64,7 @@ const Login = () => {
         });
     } else {
       //sign in logic
-      console.log('else block hit');
+
       signInWithEmailAndPassword(
         auth,
         email.current.value,
@@ -76,8 +73,7 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          navigate('/browse');
-          console.log(user);
+
           // ...
         })
         .catch((error) => {

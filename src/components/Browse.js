@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
-function Browse() {
+import useNowPlayingMovies from '../hooks/useNowPlayingMovies';
+import MainContainer from './MainContainer';
+const Browse = () => {
+  const [movieData, setMovieData] = useState([]);
+
+  const Data = useNowPlayingMovies();
+
+  useEffect(() => {
+    if (Data) {
+    }
+    setMovieData(Data);
+  }, []);
+
   return (
     <div>
       <Header />
-      HI YOU ARE IN BROWSE
+      <MainContainer />
     </div>
   );
-}
+};
 
 export default Browse;
